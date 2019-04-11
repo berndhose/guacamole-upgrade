@@ -6,13 +6,10 @@ Download/Run this Apache Guacamole update Script for RHEL 7 & CentOS 7
 WARNING: Test this script in a dev environment prior to using it in a production environment!
 
 Download the guac-upgrade.sh script from this repo:
-
 wget https://raw.githubusercontent.com/berndhose/guacamole-upgrade/master/guac-upgrade.sh
 
 Make the guac-upgrade.sh script executable:
-
 chmod +x guac-upgrade.sh
 
 Run the script as sudo/root:
-
 ./guac-upgrade.sh
