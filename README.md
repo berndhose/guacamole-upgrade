@@ -1,7 +1,7 @@
 # guacamole-upgrade
 Automated script to update Apache Guacamole running on CentOS 7 or RHEL 7
 
-WARNING: Test this script in a dev environment prior to using it in a production environment!
+WARNING: Test this script in a test environment prior to using it in a production environment!
 
 Download the guac-upgrade.sh script from this repo:
 wget https://raw.githubusercontent.com/berndhose/guacamole-upgrade/master/guac-upgrade.sh
