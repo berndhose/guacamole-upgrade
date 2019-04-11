@@ -1,7 +1,5 @@
 # guacamole-upgrade
-Automated script to update Apache Guacamole running on CentOS 7 or RHEL
-
-Download/Run this Apache Guacamole update Script for RHEL 7 & CentOS 7
+Automated script to update Apache Guacamole running on CentOS 7 or RHEL 7
 
 WARNING: Test this script in a dev environment prior to using it in a production environment!
 
