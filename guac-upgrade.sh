@@ -15,10 +15,10 @@
 #####################################################################################################
 # User defined directories, adjust to reflect actual Tomcat and Guacamole installation
 #####################################################################################################
-LIB_DIR="/var/lib/guacamole/"							# Directory where guacamole is installed
-PROPERTIES_DIR="/etc/guacamole/"						# Directory of guacamole properties
-INSTALL_DIR="/usr/local/src/guacamole/${GUAC_VER}/"		# Guacamole source installation dir
-WEBAPPS_DIR="/var/lib/tomcat/webapps/"					# Directory of Tomcat webapps
+LIB_DIR="/var/lib/guacamole/"     # Directory where guacamole is installed
+PROPERTIES_DIR="/etc/guacamole/"     # Directory of guacamole properties
+INSTALL_DIR="/usr/local/src/guacamole/${GUAC_VER}/"     # Guacamole source installation dir
+WEBAPPS_DIR="/var/lib/tomcat/webapps/"     # Directory of Tomcat webapps
 #####################################################################################################
 # End of user defined directories
 #####################################################################################################
@@ -53,11 +53,11 @@ if [ $? -ne 0 ]; then
 fi
 
 # Delete install directory to ensure Git can be cloned
-rm -rf ${INSTALL_DIR}
+rm -rf ${INSTALL_DIR}${GUAC_VER}
 
 # Create empty install directory
-mkdir -vp ${INSTALL_DIR}
-cd ${INSTALL_DIR}
+mkdir -vp ${INSTALL_DIR}${GUAC_VER}
+cd ${INSTALL_DIR}${GUAC_VER}
 
 # Download Guacamole server
 git clone ${GUAC_URL}${GUAC_SERVER}
@@ -78,7 +78,7 @@ service ${TOMCAT} stop
 service guacd stop
 
 # Compile and upgrade Guacamole Server
-cd ${INSTALL_DIR}guacamole-server
+cd ${INSTALL_DIR}${GUAC_VER}guacamole-server
 autoreconf -fi
 ./configure --with-systemd-dir=/etc/systemd/system
 make
@@ -90,14 +90,14 @@ systemctl enable guacd
 rm -rf ${WEBAPPS_DIR}guacamole
 
 # Compile and upgrade Guacamole Client
-cd ${INSTALL_DIR}guacamole-client
+cd ${INSTALL_DIR}${GUAC_VER}guacamole-client
 OLD_PATH=${PATH}
 export PATH=/opt/maven/bin:${PATH}
 mvn package
 export PATH=${OLD_PATH}
 cp -vf guacamole/target/guacamole-${GUAC_VER}.war ${LIB_DIR}guacamole.war
 
-cd ${INSTALL_DIR}
+cd ${INSTALL_DIR}${GUAC_VER}
 
 # Remove old authenticator extensions
 rm -rf ${LIB_DIR}extensions/guacamole-auth-jdbc-mysql*
