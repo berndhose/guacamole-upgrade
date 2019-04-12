@@ -78,7 +78,7 @@ service ${TOMCAT} stop
 service guacd stop
 
 # Compile and upgrade Guacamole Server
-cd ${INSTALL_DIR}${GUAC_VER}guacamole-server
+cd ${INSTALL_DIR}${GUAC_VER}/guacamole-server
 autoreconf -fi
 ./configure --with-systemd-dir=/etc/systemd/system
 make
@@ -90,7 +90,7 @@ systemctl enable guacd
 rm -rf ${WEBAPPS_DIR}guacamole
 
 # Compile and upgrade Guacamole Client
-cd ${INSTALL_DIR}${GUAC_VER}guacamole-client
+cd ${INSTALL_DIR}${GUAC_VER}/guacamole-client
 OLD_PATH=${PATH}
 export PATH=/opt/maven/bin:${PATH}
 mvn package
