@@ -18,7 +18,7 @@
 #####################################################################################################
 
 ##### User defined directories, adjust to reflect actual Tomcat and Guacamole installation ##########
-LIB_DIR="/var/lib/guacamole/"                           # Directory where guacamole is installed
+LIB_DIR="/var/lib/guacamole/"                           # Directory where Guacamole is installed
 PROPERTIES_DIR="/etc/guacamole/"                        # Directory of guacamole properties
 INSTALL_DIR="/usr/local/src/guacamole/${GUAC_VER}/"     # Guacamole source installation dir
 WEBAPPS_DIR="/var/lib/tomcat/webapps/"                  # Directory of Tomcat webapps
