@@ -17,7 +17,7 @@
 # Both MySQL and LDAP authenticators will be upgraded!
 #####################################################################################################
 
-##### User defined directories, adjust to reflect actual Tomcat and Guacamole installation ##########
+##### User defined directories, adjust to reflect current Tomcat and Guacamole installation #########
 LIB_DIR="/var/lib/guacamole/"                           # Directory where Guacamole is installed
 PROPERTIES_DIR="/etc/guacamole/"                        # Directory of Guacamole properties
 INSTALL_DIR="/usr/local/src/guacamole/${GUAC_VER}/"     # Guacamole source installation dir
