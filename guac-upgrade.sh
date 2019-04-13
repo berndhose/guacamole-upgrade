@@ -53,10 +53,11 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 
-# Delete install directory to ensure Git can be cloned
+#### Download new version from Git
+# Delete install directory to ensure Git can be cloned (needs empty directory)
 rm -rf ${INSTALL_DIR}${GUAC_VER}
 
-# Create empty install directory
+# Create install directory
 mkdir -vp ${INSTALL_DIR}${GUAC_VER}
 cd ${INSTALL_DIR}${GUAC_VER}
 
@@ -74,11 +75,11 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 
-# Stop Tomcat and guacamole server services
+##### Stop Tomcat and guacamole server services
 service ${TOMCAT} stop
 service guacd stop
 
-# Compile and upgrade Guacamole Server
+##### Compile and upgrade Guacamole Server
 cd ${INSTALL_DIR}${GUAC_VER}/guacamole-server
 autoreconf -fi
 ./configure --with-systemd-dir=/etc/systemd/system
@@ -87,30 +88,28 @@ make install
 ldconfig
 systemctl enable guacd
 
-# Cleanup outdated guacamole directory in Tomcat, will be populated again when Tomcat restarts
-rm -rf ${WEBAPPS_DIR}guacamole
-
-# Compile and upgrade Guacamole Client
+##### Compile and upgrade Guacamole Client
 cd ${INSTALL_DIR}${GUAC_VER}/guacamole-client
 OLD_PATH=${PATH}
 export PATH=/opt/maven/bin:${PATH}
 mvn package
 export PATH=${OLD_PATH}
-cp -vf guacamole/target/guacamole-${GUAC_VER}.war ${LIB_DIR}guacamole.war
+cp -vf ./guacamole/target/guacamole-${GUAC_VER}.war ${LIB_DIR}guacamole.war
 
-cd ${INSTALL_DIR}${GUAC_VER}
-
+##### Update authenticators
 # Remove old authenticator extensions
 rm -rf ${LIB_DIR}extensions/guacamole-auth-jdbc-mysql*
 rm -rf ${LIB_DIR}extensions/guacamole-auth-ldap*
 
-# Get JDBC authenticator from compiled client and copy to Tomcat 
+cd ${INSTALL_DIR}${GUAC_VER}
+# Get JDBC MySQL authenticator from compiled client and copy to Tomcat guacamole client 
 find ./guacamole-client/extensions -name "guacamole-auth-jdbc-mysql-${GUAC_VER}.jar" -exec cp -vf {} ${LIB_DIR}extensions/ \;
-# Get LDAP authenticator from compiled client and copy to Tomcat 
+# Get LDAP authenticator from compiled client and copy to Tomcat guacamole client
 find ./guacamole-client/extensions -name "guacamole-auth-ldap-${GUAC_VER}.jar" -exec cp -vf {} ${LIB_DIR}extensions/ \;
 
+##### Update SQL database
+cd ${INSTALL_DIR}${GUAC_VER}/guacamole-client/extensions
 # Get list of SQL Upgrade Files
-cd ./guacamole-client/extensions
 UPGRADEFILES=($(ls -1 ./guacamole-auth-jdbc/modules/guacamole-auth-jdbc-mysql/schema/upgrade/ | sort -V))
 
 # Compare SQL Upgrage Files against old guacamole database version, apply upgrades as needed
@@ -124,7 +123,7 @@ do
     fi
 done
 
-# Manage Selinux settings
+##### Manage Selinux settings
 # Guacamole Client Context
 semanage fcontext -a -t tomcat_exec_t "${LIB_DIR}guacamole.war"
 restorecon -v "${LIB_DIR}guacamole.war"
@@ -137,10 +136,12 @@ restorecon -v "${LIB_DIR}extensions/guacamole-auth-jdbc-mysql-${GUAC_VER}.jar"
 semanage fcontext -a -t tomcat_exec_t "${LIB_DIR}extensions/guacamole-auth-ldap-${GUAC_VER}.jar"
 restorecon -v "${LIB_DIR}extensions/guacamole-auth-ldap-${GUAC_VER}.jar"
 
-cd ~
-
-# Start tomcat and guacamole server
+##### Start services
+# Cleanup outdated expanded guacamole client directory in Tomcat, will be populated again when Tomcat restarts
+rm -rf ${WEBAPPS_DIR}guacamole
+# Start Tomcat and guacamole server
 service ${TOMCAT} start
 service guacd start
 
+cd ${INSTALL_DIR}${GUAC_VER}
 exit 0
