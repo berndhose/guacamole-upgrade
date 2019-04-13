@@ -1,6 +1,6 @@
 #!/bin/bash
 
-##################################       DISCLAIMER             #####################################
+##### DISCLAIMER ####################################################################################
 # Project Page: https://github.com/berndhose/guacamole-upgrade
 # Licence (GPL-3.0): https://github.com/berndhose/guacamole-upgrade/blob/master/LICENSE
 # Report Issues: https://github.com/berndhose/guacamole-upgrade/issues
@@ -11,16 +11,17 @@
 #	-Test prior to deploying on a production system!
 #####################################################################################################
 
+##### MUST READ #####################################################################################
+# Script updates guacamole installations only, which have been installed from Git with the 
+# installation script from https://github.com/Zer0CoolX/guacamole-install-rhel
+# Both MySQL and LDAP authenticators will be upgraded!
+#####################################################################################################
 
-#####################################################################################################
-# User defined directories, adjust to reflect actual Tomcat and Guacamole installation
-#####################################################################################################
-LIB_DIR="/var/lib/guacamole/"     # Directory where guacamole is installed
-PROPERTIES_DIR="/etc/guacamole/"     # Directory of guacamole properties
+##### User defined directories, adjust to reflect actual Tomcat and Guacamole installation ##########
+LIB_DIR="/var/lib/guacamole/"                           # Directory where guacamole is installed
+PROPERTIES_DIR="/etc/guacamole/"                        # Directory of guacamole properties
 INSTALL_DIR="/usr/local/src/guacamole/${GUAC_VER}/"     # Guacamole source installation dir
-WEBAPPS_DIR="/var/lib/tomcat/webapps/"     # Directory of Tomcat webapps
-#####################################################################################################
-# End of user defined directories
+WEBAPPS_DIR="/var/lib/tomcat/webapps/"                  # Directory of Tomcat webapps
 #####################################################################################################
 
 # Check if user is root or sudo
