@@ -12,7 +12,7 @@
 #####################################################################################################
 
 ##### MUST READ #####################################################################################
-# Script updates guacamole installations only, which have been installed from Git with the 
+# This script updates guacamole installations only, which have been installed from Git with the 
 # installation script from https://github.com/Zer0CoolX/guacamole-install-rhel
 # Both MySQL and LDAP authenticators will be upgraded!
 #####################################################################################################
