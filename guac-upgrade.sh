@@ -27,7 +27,7 @@ WEBAPPS_DIR="/var/lib/tomcat/webapps/"                  # Directory of Tomcat we
 ##### Check if user is root or sudo
 if ! [ $(id -u) = 0 ]; then echo "This script must be run as sudo or root"; exit 1 ; fi
 
-# Get the master version No. of Guacamole from Git
+##### Get the master version No. of Guacamole from Git
 GUAC_VER=`curl -s https://raw.githubusercontent.com/apache/guacamole-server/master/configure.ac | grep 'AC_INIT([guacamole-server]*' | awk -F'[][]' -v n=2 '{ print $(2*n) }'`
 GUAC_URL="git://github.com/apache/"
 GUAC_SERVER="guacamole-server.git"
