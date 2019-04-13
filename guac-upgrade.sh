@@ -24,7 +24,7 @@ INSTALL_DIR="/usr/local/src/guacamole/${GUAC_VER}/"     # Guacamole source insta
 WEBAPPS_DIR="/var/lib/tomcat/webapps/"                  # Directory of Tomcat webapps
 #####################################################################################################
 
-# Check if user is root or sudo
+##### Check if user is root or sudo
 if ! [ $(id -u) = 0 ]; then echo "This script must be run as sudo or root"; exit 1 ; fi
 
 # Get the master version No. of Guacamole from Git
