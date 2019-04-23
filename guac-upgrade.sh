@@ -97,15 +97,19 @@ export PATH=${OLD_PATH}
 cp -vf ./guacamole/target/guacamole-${GUAC_VER}.war ${LIB_DIR}guacamole.war
 
 ##### Update authenticators
-# Remove old authenticator extensions
-rm -rf ${LIB_DIR}extensions/guacamole-auth-jdbc-mysql*
-rm -rf ${LIB_DIR}extensions/guacamole-auth-ldap*
-
 cd ${INSTALL_DIR}${GUAC_VER}
+
 # Get JDBC MySQL authenticator from compiled client and copy to Tomcat Guacamole client 
-find ./guacamole-client/extensions -name "guacamole-auth-jdbc-mysql-${GUAC_VER}.jar" -exec cp -vf {} ${LIB_DIR}extensions/ \;
+if [ -e ${LIB_DIR}extensions/guacamole-auth-jdbc-mysql-* ]; then
+    rm -rf ${LIB_DIR}extensions/guacamole-auth-jdbc-mysql*  
+    find ./guacamole-client/extensions -name "guacamole-auth-jdbc-mysql-${GUAC_VER}.jar" -exec cp -vf {} ${LIB_DIR}extensions/ \;
+fi
+
 # Get LDAP authenticator from compiled client and copy to Tomcat guacamole client
-find ./guacamole-client/extensions -name "guacamole-auth-ldap-${GUAC_VER}.jar" -exec cp -vf {} ${LIB_DIR}extensions/ \;
+if [ -e ${LIB_DIR}extensions/guacamole-auth-ldap-*.jar ]; then
+    rm -rf ${LIB_DIR}extensions/guacamole-auth-ldap*
+    find ./guacamole-client/extensions -name "guacamole-auth-ldap-${GUAC_VER}.jar" -exec cp -vf {} ${LIB_DIR}extensions/ \;
+fi
 
 ##### Update SQL database
 cd ${INSTALL_DIR}${GUAC_VER}/guacamole-client/extensions
@@ -129,12 +133,16 @@ semanage fcontext -a -t tomcat_exec_t "${LIB_DIR}guacamole.war"
 restorecon -v "${LIB_DIR}guacamole.war"
 
 # Guacamole JDBC Extension Context
-semanage fcontext -a -t tomcat_exec_t "${LIB_DIR}extensions/guacamole-auth-jdbc-mysql-${GUAC_VER}.jar"
-restorecon -v "${LIB_DIR}extensions/guacamole-auth-jdbc-mysql-${GUAC_VER}.jar"
+if [ -e ${LIB_DIR}extensions/guacamole-auth-jdbc-mysql-* ]; then
+    semanage fcontext -a -t tomcat_exec_t "${LIB_DIR}extensions/guacamole-auth-jdbc-mysql-${GUAC_VER}.jar"
+    restorecon -v "${LIB_DIR}extensions/guacamole-auth-jdbc-mysql-${GUAC_VER}.jar"
+fi
 
 # Guacamole LDAP Extension Context
-semanage fcontext -a -t tomcat_exec_t "${LIB_DIR}extensions/guacamole-auth-ldap-${GUAC_VER}.jar"
-restorecon -v "${LIB_DIR}extensions/guacamole-auth-ldap-${GUAC_VER}.jar"
+if [ -e ${LIB_DIR}extensions/guacamole-auth-ldap-*.jar ]; then
+    semanage fcontext -a -t tomcat_exec_t "${LIB_DIR}extensions/guacamole-auth-ldap-${GUAC_VER}.jar"
+    restorecon -v "${LIB_DIR}extensions/guacamole-auth-ldap-${GUAC_VER}.jar"
+fi
 
 ##### Start services
 # Cleanup outdated expanded Guacamole client directory in Tomcat, will be populated again when Tomcat restarts
