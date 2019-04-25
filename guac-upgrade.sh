@@ -90,10 +90,8 @@ systemctl enable guacd
 
 ##### Compile and upgrade Guacamole Client
 cd ${INSTALL_DIR}${GUAC_VER}/guacamole-client
-OLD_PATH=${PATH}
 export PATH=/opt/maven/bin:${PATH}
 mvn package
-export PATH=${OLD_PATH}
 cp -vf ./guacamole/target/guacamole-${GUAC_VER}.war ${LIB_DIR}guacamole.war
 
 ##### Update authenticators
@@ -151,5 +149,4 @@ rm -rf ${WEBAPPS_DIR}guacamole
 service ${TOMCAT} start
 service guacd start
 
-cd ${INSTALL_DIR}${GUAC_VER}
 exit 0
