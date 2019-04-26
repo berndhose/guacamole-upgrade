@@ -14,7 +14,7 @@
 ##### MUST READ #####################################################################################
 # This script updates Guacamole installations only, which have been installed from Git with the 
 # installation script from https://github.com/Zer0CoolX/guacamole-install-rhel
-# Both MySQL and LDAP authenticators will be upgraded!
+# MySQL,LDAP,RADIUS authenticators will be upgraded, if exisiting in extensions directory
 #####################################################################################################
 
 ##### User defined directories, adjust to reflect current Tomcat and Guacamole installation #########
@@ -90,10 +90,8 @@ systemctl enable guacd
 
 ##### Compile and upgrade Guacamole Client
 cd ${INSTALL_DIR}${GUAC_VER}/guacamole-client
-OLD_PATH=${PATH}
 export PATH=/opt/maven/bin:${PATH}
 mvn package
-export PATH=${OLD_PATH}
 cp -vf ./guacamole/target/guacamole-${GUAC_VER}.war ${LIB_DIR}guacamole.war
 
 ##### Update authenticators
@@ -109,6 +107,12 @@ fi
 if [ -e ${LIB_DIR}extensions/guacamole-auth-ldap-*.jar ]; then
     rm -rf ${LIB_DIR}extensions/guacamole-auth-ldap*
     find ./guacamole-client/extensions -name "guacamole-auth-ldap-${GUAC_VER}.jar" -exec cp -vf {} ${LIB_DIR}extensions/ \;
+fi
+
+# Get RADIOS authenticator from compiled client and copy to Tomcat guacamole client
+if [ -e ${LIB_DIR}extensions/guacamole-auth-radius-*.jar ]; then
+    rm -rf ${LIB_DIR}extensions/guacamole-auth-radius*
+    find ./guacamole-client/extensions -name "guacamole-radius-ldap-${GUAC_VER}.jar" -exec cp -vf {} ${LIB_DIR}extensions/ \;
 fi
 
 ##### Update SQL database
@@ -144,6 +148,12 @@ if [ -e ${LIB_DIR}extensions/guacamole-auth-ldap-*.jar ]; then
     restorecon -v "${LIB_DIR}extensions/guacamole-auth-ldap-${GUAC_VER}.jar"
 fi
 
+# Guacamole RADIUS Extension Context
+if [ -e ${LIB_DIR}extensions/guacamole-radius-ldap-*.jar ]; then
+    semanage fcontext -a -t tomcat_exec_t "${LIB_DIR}extensions/guacamole-auth-radius-${GUAC_VER}.jar"
+    restorecon -v "${LIB_DIR}extensions/guacamole-auth-radius-${GUAC_VER}.jar"
+fi
+
 ##### Start services
 # Cleanup outdated expanded Guacamole client directory in Tomcat, will be populated again when Tomcat restarts
 rm -rf ${WEBAPPS_DIR}guacamole
@@ -151,5 +161,4 @@ rm -rf ${WEBAPPS_DIR}guacamole
 service ${TOMCAT} start
 service guacd start
 
-cd ${INSTALL_DIR}${GUAC_VER}
 exit 0
