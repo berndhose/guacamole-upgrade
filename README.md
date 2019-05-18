@@ -18,4 +18,5 @@ Run the script as sudo/root:
 ./guac-upgrade.sh
 ```
 
+**Credits:**
 Shell code used from https://github.com/MysticRyuujin/guac-install and https://github.com/Zer0CoolX/guacamole-install-rhel
