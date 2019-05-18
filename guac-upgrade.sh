@@ -53,6 +53,9 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 
+# Create backup of current database
+mysqldump -u ${MYSQL_USER} -h ${MYSQL_SERVER} --add-drop-table ${DATABASE} > guacamole-db-dump.sql
+
 #### Download new version from Git
 # Delete install directory to ensure Git can be cloned (needs empty directory)
 rm -rf ${INSTALL_DIR}${GUAC_VER}
