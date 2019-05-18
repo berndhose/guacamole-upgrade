@@ -1,5 +1,5 @@
 # guacamole-upgrade
-## Automated script to update Apache Guacamole running on CentOS 7 or RHEL 7
+## Automated script to update Apache Guacamole running on CentOS7 or RHEL7
 
 **WARNING: Test this script in a development environment prior to using it in a production environment!**
 
@@ -19,4 +19,5 @@ Run the script as sudo/root:
 ```
 
 **Credits:**
+
 Shell code used from https://github.com/MysticRyuujin/guac-install and https://github.com/Zer0CoolX/guacamole-install-rhel
