@@ -53,8 +53,9 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 
-# Create backup of current database
-mysqldump -h ${MYSQL_SERVER} -u ${MYSQL_USER} -p ${MYSQL_PWD} --add-drop-table ${DATABASE} > guacamole-db-dump.sql
+# Create backup of current database, assuming user root has admin rights on the database
+echo "Enter password for user root to login to MySQL database ${DATABASE} on server ${MYSQL_SERVER}"
+mysqldump -h ${MYSQL_SERVER} -u root -p --add-drop-table ${DATABASE} > guacamole-db-dump.sql
 
 #### Download new version from Git
 # Delete install directory to ensure Git can be cloned (needs empty directory)
