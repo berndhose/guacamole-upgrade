@@ -4,7 +4,7 @@
 
 ## MUST READ
 This script updates Guacamole installations only, which have been installed from Git with
-the installation script from https://github.com/Zer0CoolX/guacamole-install-rhel
+the installation script from https://github.com/Zer0CoolX/guacamole-install-rhel.
 MySQL,LDAP and RADIUS authenticators will be upgraded, if exisiting in extensions directory
 
 
