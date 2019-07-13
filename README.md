@@ -2,11 +2,11 @@
 ## Automated script to update Apache Guacamole running on CentOS7 or RHEL7
 
 
-##### MUST READ #####################################################################################
-# This script updates Guacamole installations only, which have been installed from Git with the 
-# installation script from https://github.com/Zer0CoolX/guacamole-install-rhel
-# MySQL,LDAP,RADIUS authenticators will be upgraded, if exisiting in extensions directory
-#####################################################################################################
+## MUST READ ##
+## This script updates Guacamole installations only, which have been installed from Git with
+## the installation script from https://github.com/Zer0CoolX/guacamole-install-rhel
+## MySQL,LDAP,RADIUS authenticators will be upgraded, if exisiting in extensions directory
+
 
 **WARNING: Test this script in a development environment prior to using it in a production environment!**
 
